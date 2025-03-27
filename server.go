@@ -151,6 +151,14 @@ func ListenAndServe(addr string, handler Handler) error {
 	return server.ListenAndServe()
 }
 
+// tls config 추가
+func ListenAndServerTlsConfig(addr string, conf *tls.Config, handler Handler) error {
+	server := &Server{Addr: addr, Handler: handler}
+	return server.ListenAndServerTlsConfig(conf)
+}
+// EOF
+
+
 // A Server defines parameters for running OpenFlow server.
 type Server struct {
 	// Addr is an address to listen on.
@@ -215,6 +223,16 @@ func (srv *Server) ListenAndServe() error {
 
 	return srv.Serve(ln)
 }
+
+// ListenAndServe whith tls config
+func (srv *Server) ListenAndServerTlsConfig(conf *tls.Config) error {
+	ln, err := tls.Listen("tcp", srv.Addr, conf)
+	if err != nil {
+		return err
+	}
+	return srv.Serve(ln)
+}
+//EOF
 
 // Serve accepts incoming connections on the Listener l, creating a
 // new service goroutine for each.
