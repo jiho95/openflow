@@ -1,6 +1,7 @@
 package openflow
 
 import (
+	"crypto/tls"
 	"bytes"
 	"io"
 	"net"
